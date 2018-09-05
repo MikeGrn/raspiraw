@@ -135,13 +135,15 @@ struct sensor_def
 #define NUM_ELEMENTS(a)  (sizeof(a) / sizeof(a[0]))
 
 #include "ov5647_modes.h"
-#include "imx219_modes.h"
+//#include "imx219_modes.h"
 #include "adv7282m_modes.h"
+#include "ar0144_modes.h"
 
 const struct sensor_def *sensors[] = {
 	&ov5647,
-	&imx219,
+	//&imx219,
 	&adv7282,
+	&ar0144,
 	NULL
 };
 
@@ -282,7 +284,7 @@ static int i2c_rd(int fd, uint8_t i2c_addr, uint16_t reg, uint8_t *values, uint3
 	msgset.nmsgs = 2;
 
 	err = ioctl(fd, I2C_RDWR, &msgset);
-	//vcos_log_error("Read i2c addr %02X, reg %04X (len %d), value %02X, err %d", i2c_addr, msgs[0].buf[0], msgs[0].len, values[0], err);
+	vcos_log_error("Read i2c addr %02X, reg %04X (len %d), value %02X, err %d", i2c_addr, msgs[0].buf[0], msgs[0].len, values[0], err);
 	if (err != (int)msgset.nmsgs)
 		return -1;
 
@@ -291,7 +293,7 @@ static int i2c_rd(int fd, uint8_t i2c_addr, uint16_t reg, uint8_t *values, uint3
 
 const struct sensor_def * probe_sensor(void)
 {
-	int fd;
+	/*int fd;
 	const struct sensor_def **sensor_list = &sensors[0];
 	const struct sensor_def *sensor = NULL;
 
@@ -320,8 +322,8 @@ const struct sensor_def * probe_sensor(void)
 		}
 		sensor_list++;
 		sensor = NULL;
-	}
-	return sensor;
+	}*/
+	return sensors[2];
 }
 
 void send_regs(int fd, const struct sensor_def *sensor, const struct sensor_regs *regs, int num_regs)
@@ -969,9 +971,11 @@ int main(int argc, char** argv) {
 		return -1;
 	}
 
+	printf("!!!!!!%d %d\n", cfg.mode, sensor->num_modes);
 	if (cfg.mode >= 0 && cfg.mode < sensor->num_modes)
 	{
 		sensor_mode = &sensor->modes[cfg.mode];
+		printf("%p\n", sensor_mode);
 	}
 
 	if (!sensor_mode)
