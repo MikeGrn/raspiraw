@@ -1,0 +1,1229 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"RTe",
+				"RText-native"
+			],
+			[
+				"rows",
+				"rowsCount"
+			]
+		]
+	},
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 46.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"build",
+				"Build: New Build System"
+			],
+			[
+				"pacin",
+				"Package Control: Install Package"
+			],
+			[
+				"pacinst",
+				"Package Control: Install Package"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"pacre",
+				"Package Control: Remove Package"
+			],
+			[
+				"ssup",
+				"Sync Settings: Upload"
+			],
+			[
+				"ope",
+				"Open: Browse"
+			],
+			[
+				"ssdo",
+				"Sync Settings: Download"
+			],
+			[
+				"rei",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"pacres",
+				"PackageResourceViewer: Open Resource"
+			],
+			[
+				"sysup",
+				"Sync Settings: Upload"
+			],
+			[
+				"origsav",
+				"Origami: Save Current Layout"
+			],
+			[
+				"orig",
+				"Origami: Destroy Current Pane"
+			],
+			[
+				"origzo",
+				"Origami: Zoom Current Pane"
+			],
+			[
+				"pacins",
+				"Package Control: Install Package"
+			],
+			[
+				"rein",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"loca",
+				"Local History: Snapshots"
+			],
+			[
+				"syn",
+				"Sync Settings: Download"
+			],
+			[
+				"down",
+				"Sync Settings: Download"
+			],
+			[
+				"todo",
+				"Set Syntax: ToDone"
+			],
+			[
+				"not",
+				"Set Syntax: Notes"
+			],
+			[
+				"ssynot",
+				"Set Syntax: Notes - Text"
+			],
+			[
+				"close",
+				"File: Close All"
+			],
+			[
+				"sync",
+				"Sync Settings: Upload"
+			],
+			[
+				"pacrem",
+				"Package Control: Remove Package"
+			],
+			[
+				"ssno",
+				"Set Syntax: Notes"
+			],
+			[
+				"ssnote",
+				"Set Syntax: Notes"
+			],
+			[
+				"ss",
+				"Set Syntax: Markdown"
+			],
+			[
+				"ssnot",
+				"Set Syntax: Notes"
+			],
+			[
+				"sesyno",
+				"Set Syntax: Notes"
+			],
+			[
+				"ssynor",
+				"Set Syntax: orgmode"
+			],
+			[
+				"paclis",
+				"Package Control: List Packages"
+			],
+			[
+				"sesynot",
+				"Set Syntax: Notes"
+			],
+			[
+				"notes",
+				"Notes: New…"
+			],
+			[
+				"note",
+				"Notes: Index"
+			],
+			[
+				"inb",
+				"Notes: Inbox"
+			],
+			[
+				"setsmd",
+				"Set Syntax: Markdown"
+			],
+			[
+				"gitst",
+				"git: status"
+			],
+			[
+				"gitcom",
+				"git: commit"
+			],
+			[
+				"tasks",
+				"Tasks: New"
+			],
+			[
+				"disab",
+				"Package Control: Disable Package"
+			],
+			[
+				"syncdow",
+				"Sync Settings: Download"
+			],
+			[
+				"boxy",
+				"Boxy Theme: Configuration"
+			],
+			[
+				"pacen",
+				"Package Control: Enable Package"
+			],
+			[
+				"pacdis",
+				"Package Control: Disable Package"
+			],
+			[
+				"modi",
+				"Modific: Revert modified part"
+			],
+			[
+				"renam",
+				"File: Rename"
+			],
+			[
+				"comp",
+				"Sublimerge: Compare to Revision..."
+			],
+			[
+				"stat",
+				"git: status"
+			],
+			[
+				"sublimerge",
+				"Sublimerge: Compare to Other Branch..."
+			],
+			[
+				"uncomm",
+				"Sublimerge: Show Uncommited Changes..."
+			],
+			[
+				"paclist",
+				"Package Control: List Packages"
+			],
+			[
+				"uncom",
+				"Sublimerge: Show Uncommited Changes..."
+			],
+			[
+				"Sublimerge",
+				"Sublimerge: View VCS Cache"
+			],
+			[
+				"pack",
+				"Package Control: List Unmanaged Packages"
+			],
+			[
+				"gist",
+				"Git: Status"
+			],
+			[
+				"gitlog",
+				"Git: Log"
+			],
+			[
+				"decr",
+				"Transcrypt::Decrypt"
+			],
+			[
+				"encr",
+				"Transcrypt::Encrypt"
+			],
+			[
+				"re",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"dec",
+				"Transcrypt::Decrypt"
+			],
+			[
+				"bui",
+				"Build With: asciidoctor-pdf"
+			],
+			[
+				"bu",
+				"Build With: asciidoctor-pdf"
+			],
+			[
+				"git st",
+				"Git: Status"
+			],
+			[
+				"git ",
+				"Git: Quick Log"
+			],
+			[
+				"git",
+				"Git: Log"
+			],
+			[
+				"gitlo",
+				"Git: Quick Log Current File"
+			],
+			[
+				"hist",
+				"Local History: Browse"
+			],
+			[
+				"arch",
+				"Tasks: Archive within selection(s)"
+			],
+			[
+				"prev",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"ssmar",
+				"Set Syntax: Markdown GFM"
+			],
+			[
+				"ssmd",
+				"Set Syntax: Markdown"
+			],
+			[
+				"previ",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"scope",
+				"Toggle ScopeAlways"
+			],
+			[
+				"pacli",
+				"Package Control: List Packages"
+			],
+			[
+				"hi",
+				"Local History: Browse"
+			],
+			[
+				"mark",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"d",
+				"Crypto::Decrypt"
+			],
+			[
+				"enc",
+				"Crypto::Encrypt"
+			],
+			[
+				"de",
+				"Crypto::Decrypt"
+			],
+			[
+				"pacl",
+				"Package Control: List Packages"
+			],
+			[
+				"cale",
+				"DrCalendar: Show panel"
+			],
+			[
+				"ssasci",
+				"Set Syntax: AsciiDoc (Asciidoctor)"
+			],
+			[
+				"pacisnt",
+				"Package Control: Install Package"
+			],
+			[
+				"ssad",
+				"Set Syntax: AsciiDoc (Asciidoctor)"
+			],
+			[
+				"ssor",
+				"Set Syntax: orgmode"
+			],
+			[
+				"ssma",
+				"Set Syntax: Markdown"
+			],
+			[
+				"asc",
+				"Set Syntax: AsciiDoc (Asciidoctor)"
+			],
+			[
+				":w",
+				":w - Save"
+			],
+			[
+				"ssm",
+				"Set Syntax: Markdown"
+			],
+			[
+				"loc",
+				"Local History: Open"
+			],
+			[
+				"mod",
+				"Modific: Revert modified part"
+			],
+			[
+				"locho",
+				"Local History: Browse"
+			],
+			[
+				"gitpush",
+				"Git: Push Current Branch"
+			],
+			[
+				"git:log",
+				"Git: Log"
+			],
+			[
+				"git: statu",
+				"Git: Status"
+			]
+		],
+		"width": 510.0
+	},
+	"console":
+	{
+		"height": 442.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '6f4c264a24d933ce70df5dedcf1dcaee' + 'ebe013ee18cced0ef93d5f746d80ef60'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by) ",
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by) "
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/azhidkov/0my/Alive/I/tasks/today.todo",
+		"/home/azhidkov/.config/sublime-text-3/Packages/PlainTasks/PlainTasks (Linux).sublime-settings",
+		"/home/azhidkov/.config/sublime-text-3/Packages/Default/Default (Linux).sublime-mousemap",
+		"/home/azhidkov/0my/Alive/I/tasks/urgent.todo",
+		"/home/azhidkov/0my/Alive/activities.todo",
+		"/home/azhidkov/0my/Alive/notes.sublime-project",
+		"/home/azhidkov/0my/Alive/I/tasks/unimportant.todo",
+		"/home/azhidkov/0my/Alive/I/tasks/important-not-urgent.todo",
+		"/home/azhidkov/.config/sublime-text-3/Packages/PlainTasks/messages/Tutorial.todo",
+		"/home/azhidkov/0my/Alive/Q5/ку5.туду",
+		"/home/azhidkov/0my/Alive/.stversions/qbit/roadmap~20180102-091130.notes",
+		"/home/azhidkov/.config/sublime-text-3/Packages/User/Word Highlight.sublime-settings",
+		"/home/azhidkov/0my/Alive/.stversions/Marina/подарки-марине~20180614-142807.туду",
+		"/home/azhidkov/.config/sublime-text-3/Packages/User/PlainTasks.sublime-settings",
+		"/home/azhidkov/.local/.history/home/azhidkov/0my/Alive/tasks-20180825105320.todo",
+		"/home/azhidkov/0my/Alive/inbox.md",
+		"/home/azhidkov/0my/Alive/tasks.todo",
+		"/home/azhidkov/.config/sublime-text-3/Packages/User/SideBarEnhancements/Open With/Side Bar.sublime-menu",
+		"/home/azhidkov/0my/Alive/I/dreams.motes",
+		"/home/azhidkov/0my/Alive/Linux-Distro/linux-distro.md",
+		"/home/azhidkov/Clouds/Yandex.Disk/Inbox/set4-load-profiles.txt",
+		"/home/azhidkov/@Activities/@Archive/2017/notes.sublime-project",
+		"/home/azhidkov/@Activities/zptk/papyrus/papyrus.notes",
+		"/home/azhidkov/@Activities/@Archive/2017/-Life/journals/workout.note",
+		"/home/azhidkov/.config/sublime-text-3/Packages/Sync Settings/SyncSettings.sublime-settings",
+		"/home/azhidkov/@Activities/@Archive/2017/-Life/activities/soft/sublime.md",
+		"/home/azhidkov/@Activities/zptk/papyrus/papyrus.todo",
+		"/home/azhidkov/@Activities/@Archive/2017/-Life/activities/career-maraphon/webinar-1/170909-city.md",
+		"/home/azhidkov/.config/sublime-text-3/Packages/orgmode/messages/install.org",
+		"/home/azhidkov/Clouds/Syncthing/Life/journals/журнал-тренировок.adoc",
+		"/home/azhidkov/.config/sublime-text-3/Packages/User/SyncSettings.sublime-settings",
+		"/home/azhidkov/.config/sublime-text-3/Packages/User/Notes.sublime-settings",
+		"/home/azhidkov/.config/sublime-text-3/Packages/PlainNotes/Notes.sublime-settings",
+		"/home/azhidkov/Clouds/Syncthing/Life/activities/I/171003-products.md",
+		"/home/azhidkov/Clouds/Syncthing/Life/inbox.md",
+		"/home/azhidkov/Clouds/Syncthing/Life/activities/q-bit/notes.md",
+		"/home/azhidkov/Dropbox/Notes/.brain/Inbox.note",
+		"/home/azhidkov/Clouds/Syncthing/Life/activities/career-maraphon/170915-critique.md",
+		"/home/azhidkov/Downloads/1709-F5321-v2.csv875700209.csv",
+		"/home/azhidkov/Clouds/Syncthing/Life/activities/career-maraphon/webinar-2/170916-square-of-reality.md",
+		"/home/azhidkov/@Activities/@Inbox/170924-tomcat85-estimations.md",
+		"/home/azhidkov/Clouds/Syncthing/Life/activities/career-maraphon/webinar-6/170926-motivation-word.md",
+		"/home/azhidkov/@Activities/@Archive/2017/-zptk/papyrus/170922-release.todo",
+		"/home/azhidkov/@Activities/zptk/papyrus/170922-release.todo",
+		"/home/azhidkov/Clouds/Syncthing/Life/activities/q-bit/170918-pitch.md",
+		"/home/azhidkov/Clouds/Syncthing/Life/activities/q-bit/170918-initium-notes.md",
+		"/home/azhidkov/Clouds/Syncthing/Life/activities/q-bit/170918-intium-trends.md",
+		"/home/azhidkov/@Activities/zptk/papyrus/ce30x/ce301-time-correction.txt",
+		"/home/azhidkov/@Activities/Life/activities/I/concerns.todo",
+		"/home/azhidkov/@Activities/Life/inbox.md",
+		"/home/azhidkov/@Activities/Life/журналы/давление.log",
+		"/home/azhidkov/@Activities/Life/активности/ку5.туду",
+		"/home/azhidkov/@Activities/Life/активности/я/what-i-want.md",
+		"/home/azhidkov/@Activities/Life/активности/я/good-to-have-skills.todo",
+		"/home/azhidkov/@Activities/Life/чек-листы/coordination-excercises.md",
+		"/home/azhidkov/@Activities/Life/активности/линукс-дистро.md",
+		"/home/azhidkov/@Activities/Life/+активности.todo",
+		"/home/azhidkov/@Activities/Life/журналы/журнал-тренировок.adoc",
+		"/home/azhidkov/@Activities/Life/когда-нибудь-может-быть.todo",
+		"/home/azhidkov/@Activities/Life/journal-v2.md",
+		"/home/azhidkov/.config/sublime-text-3/Packages/User/AceJump.sublime-settings",
+		"/home/azhidkov/.config/sublime-text-3/Packages/User/Markdown.sublime-settings",
+		"/home/azhidkov/.config/sublime-text-3/Packages/MarkdownEditing/Markdown.sublime-settings",
+		"/home/azhidkov/.config/sublime-text-3/Packages/MarkdownEditing/README.md",
+		"/home/azhidkov/@Activities/Life/170412-atom-props-n-cons.md",
+		"/home/azhidkov/.config/sublime-text-3/Packages/User/Sublimerge 3.sublime-settings",
+		"/home/azhidkov/.config/sublime-text-3/Packages/Sublimerge 3/Sublimerge 3.sublime-settings",
+		"/home/azhidkov/.sync-settings.log",
+		"/home/azhidkov/.config/sublime-text-3/Cache/Sublimerge.vcs-cache",
+		"/home/azhidkov/@Activities/Life/бэклог.туду",
+		"/home/azhidkov/@Activities/Life/чек-листы/недельный-обзор.туду",
+		"/home/azhidkov/@Activities/@Archive/2017/Data-Analysis/projects/elf-visualiser/repo-view/bytes.html",
+		"/home/azhidkov/@Activities/Life/результаты/17-03-01.туду",
+		"/home/azhidkov/Programs/Excelsior-Jet/jet11.3-eval-amd64/samples/Invocation/cMain/MyDll.prj",
+		"/home/azhidkov/@Activities/Life/журналы/the-journal.log",
+		"/home/azhidkov/@Activities/Life/результаты/17-03-06-туду",
+		"/home/azhidkov/@Activities/Life/результаты/17.туду",
+		"/home/azhidkov/@Activities/Life/результаты/17-03-10.туду",
+		"/home/azhidkov/@Activities/Life/результаты/17-03-09.туду",
+		"/home/azhidkov/@Activities/Life/результаты/17-03-07.туду",
+		"/home/azhidkov/@Activities/Life/результаты/17-02-4.туду",
+		"/home/azhidkov/@Activities/Life/активности/agile-results.md",
+		"/home/azhidkov/@Activities/Life/результаты/17-03-o1.туду",
+		"/home/azhidkov/@Activities/Life/результаты/17-03.туду",
+		"/home/azhidkov/@Activities/Life/later-read.todo",
+		"/home/azhidkov/@Activities/Life/later-books.todo",
+		"/home/azhidkov/@Activities/Life/@купить.todo",
+		"/home/azhidkov/@Activities/Life/активности/я/agile-results.md",
+		"/home/azhidkov/@Activities/Life/drafts/170130-скалолазанье.md",
+		"/home/azhidkov/@Activities/Life/drafts/climbing-wall.md",
+		"/home/azhidkov/@Activities/Life/drafts/cerato-blade-assy.md",
+		"/home/azhidkov/Clouds/Syncthing/Life/активности/новый-телефон~20170302-160325.туду",
+		"/home/azhidkov/@Activities/@Inbox/1703-hammerhead.csv",
+		"/home/azhidkov/@Activities/Life/активности/я/группа-крови.туду",
+		"/home/azhidkov/@Activities/Life/активности/кардиолог.md",
+		"/home/azhidkov/@Activities/Life/check-lists/+активности.todo",
+		"/home/azhidkov/@Activities/Life/активности/результаты.туду",
+		"/home/azhidkov/@Activities/Life/база-знаний/гормоны.md",
+		"/home/azhidkov/@Activities/Life/активности/jbreak.md",
+		"/home/azhidkov/@Activities/Life/+тодо.todo",
+		"/home/azhidkov/@Activities/Life/активности/я/15-марта-2024.md",
+		"/home/azhidkov/@Activities/Life/активности/я.туду",
+		"/home/azhidkov/@Activities/Life/активности/gtd.md",
+		"/home/azhidkov/@Activities/Life/регулярно.туду",
+		"/home/azhidkov/@Activities/Life/check-lists/weekly-review.todo",
+		"/home/azhidkov/@Activities/Life/@везде.todo",
+		"/home/azhidkov/@Activities/Life/активности/ку5.md",
+		"/home/azhidkov/@Activities/Life/@сто.md",
+		"/home/azhidkov/@Activities/Life/активности/гормоны.md",
+		"/home/azhidkov/@Activities/Life/journals/журнал-тренировок.adoc",
+		"/home/azhidkov/@Activities/Life/journals/the-journal.log",
+		"/home/azhidkov/@Activities/Life/check-lists/месячный-обзор.туду",
+		"/home/azhidkov/@Activities/Life/check-lists/недельный-обзор.туду",
+		"/home/azhidkov/@Activities/Life/check-lists/дневной-обзор.todo",
+		"/home/azhidkov/@Activities/Life/активности/todo-project.md",
+		"/home/azhidkov/@Activities/Life/check-lists/уборка.туду",
+		"/home/azhidkov/@Activities/Life/активности/я/вопросы-для-Марины.туду",
+		"/home/azhidkov/@Activities/Life/journals/дневник.md",
+		"/home/azhidkov/@Activities/Life/journals/вес.csv",
+		"/home/azhidkov/@Activities/jet-on-andoid/blog.adoc",
+		"/home/azhidkov/@Activities/Life/учёт-расходов.md",
+		"/home/azhidkov/@Activities/@Archive/2003-2016/mgmt/wishes.todo",
+		"/home/azhidkov/@Activities/Life/check-lists/уборка.tada",
+		"/home/azhidkov/@Activities/Life/check-lists/daily-review.todo",
+		"/home/azhidkov/@Activities/Life/календарь.todo",
+		"/home/azhidkov/@Activities/Life/@дома.todo",
+		"/home/azhidkov/@Activities/Life/активности/электронная книга.md",
+		"/home/azhidkov/@Activities/Life/братская-могила.todo"
+	],
+	"find":
+	{
+		"height": 27.0
+	},
+	"find_in_files":
+	{
+		"height": 258.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 88.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.crypto_error":
+	{
+		"height": 120.0
+	},
+	"output.exec":
+	{
+		"height": 120.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.git-commit":
+	{
+		"height": 120.0
+	},
+	"output.git-push":
+	{
+		"height": 120.0
+	},
+	"output.jotter":
+	{
+		"height": 260.0
+	},
+	"output.textarea_drcalendar":
+	{
+		"height": 198.0
+	},
+	"output.transcrypt_error":
+	{
+		"height": 120.0
+	},
+	"output.vcs":
+	{
+		"height": 120.0
+	},
+	"pinned_build_system": "Packages/User/asciidoctor-pdf.sublime-build",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"unim",
+				"I/tasks/unimportant.todo"
+			],
+			[
+				"imp",
+				"I/tasks/important-not-urgent.todo"
+			],
+			[
+				"tod",
+				"I/tasks/today.todo"
+			],
+			[
+				"urg",
+				"I/tasks/urgent.todo"
+			],
+			[
+				"un",
+				"I/tasks/unimportant.todo"
+			],
+			[
+				"today",
+				"I/tasks/today.todo"
+			],
+			[
+				"",
+				"I/tasks/urgent.todo"
+			],
+			[
+				"impo",
+				"I/tasks/important-not-urgent.todo"
+			],
+			[
+				"ur",
+				"I/tasks/urgent.todo"
+			],
+			[
+				"to",
+				"I/tasks/today.todo"
+			],
+			[
+				"t",
+				"qbit/tuplespace.notes"
+			],
+			[
+				"act",
+				"activities.todo"
+			],
+			[
+				"a",
+				"activities.todo"
+			],
+			[
+				"ac",
+				"activities.todo"
+			],
+			[
+				"im",
+				"I/tasks/important-not-urgent.todo"
+			],
+			[
+				"под",
+				"Marina/подарки-марине.туду"
+			],
+			[
+				"flow",
+				"I/flow.notes"
+			],
+			[
+				"q5",
+				"Q5/ку5.туду"
+			],
+			[
+				"flo",
+				"I/flow.notes"
+			],
+			[
+				"w",
+				"Workout/workout.note"
+			],
+			[
+				"wok",
+				"Workout/workout.note"
+			],
+			[
+				"wo",
+				"Workout/workout.note"
+			],
+			[
+				"lin",
+				"Linux-Distro/linux-distro.md"
+			],
+			[
+				"erroto",
+				"Errors/errors.todo"
+			],
+			[
+				"err",
+				"Errors/errors.notes"
+			],
+			[
+				"work",
+				"Workout/workout.note"
+			],
+			[
+				"todo",
+				"papyrus.todo"
+			],
+			[
+				"n",
+				"papyrus.notes"
+			],
+			[
+				"note",
+				"papyrus.notes"
+			],
+			[
+				"ci",
+				"activities/career-maraphon/webinar-1/170909-city.md"
+			],
+			[
+				"wor",
+				"journals/workout.note"
+			],
+			[
+				"subl",
+				"activities/soft/sublime.md"
+			],
+			[
+				"жу",
+				"journals/журнал-тренировок.adoc"
+			],
+			[
+				"cit",
+				"activities/career-maraphon/webinar-1/170909-city.md"
+			],
+			[
+				"city",
+				"activities/career-maraphon/webinar-1/170909-city.md"
+			],
+			[
+				"q-b",
+				"activities/q-bit/notes.md"
+			],
+			[
+				"notes.md",
+				"activities/q-bit/notes.md"
+			],
+			[
+				"lnux",
+				"activities/linux-distro.md"
+			],
+			[
+				"ку",
+				"активности/ку5.туду"
+			],
+			[
+				"линук",
+				"активности/линукс-дистро.md"
+			],
+			[
+				"жур",
+				"журналы/журнал-тренировок.adoc"
+			],
+			[
+				"jou",
+				"journal-v2.md"
+			],
+			[
+				"jo",
+				"journal-v2.md"
+			],
+			[
+				"мог",
+				"братская-могила.todo"
+			],
+			[
+				"пси",
+				"активности/я/психотерапия.md"
+			],
+			[
+				"осо",
+				"журнал-осознанности.md"
+			],
+			[
+				"ку5",
+				"активности/ку5.туду"
+			],
+			[
+				"ани",
+				"активности/анимация.туду"
+			],
+			[
+				"03-01",
+				"результаты/17-03-01.туду"
+			],
+			[
+				"дне",
+				"журналы/дневник.md"
+			],
+			[
+				"гор",
+				"база-знаний/гормоны.md"
+			],
+			[
+				"мес",
+				"чек-листы/месячный-обзор.туду"
+			],
+			[
+				"agi",
+				"активности/agile-results.md"
+			],
+			[
+				"тод",
+				"+тодо.todo"
+			],
+			[
+				"ar",
+				"активности/agile-results.md"
+			],
+			[
+				"in",
+				"inbox.md"
+			],
+			[
+				"inb",
+				"inbox.md"
+			],
+			[
+				"ре",
+				"регулярно.туду"
+			],
+			[
+				"регу",
+				"регулярно.туду"
+			],
+			[
+				"то",
+				"+тодо.todo"
+			],
+			[
+				"дноб",
+				"check-lists/дневной-обзор.todo"
+			],
+			[
+				"blo",
+				"~/@Activities/jet-on-andoid/blog.adoc"
+			],
+			[
+				"ру",
+				"регулярно.туду"
+			],
+			[
+				"сто",
+				"@сто.md"
+			],
+			[
+				"днео",
+				"check-lists/дневной-обзор.todo"
+			],
+			[
+				"днеоб",
+				"check-lists/дневной-обзор.todo"
+			],
+			[
+				"учё",
+				"учёт-расходов.md"
+			],
+			[
+				"руг",
+				"регулярно.туду"
+			],
+			[
+				"рег",
+				"регулярно.туду"
+			],
+			[
+				"дневоб",
+				"check-lists/дневной-обзор.todo"
+			],
+			[
+				"я",
+				"активности/я.md"
+			],
+			[
+				"уч",
+				"учёт-расходов.md"
+			],
+			[
+				"ка",
+				"календарь.todo"
+			],
+			[
+				"ког",
+				"когда-нибудь-может-быть.todo"
+			],
+			[
+				"бра",
+				"братская-могила.todo"
+			],
+			[
+				"ака",
+				"@академ.todo"
+			],
+			[
+				"дн",
+				"journals/дневник.md"
+			],
+			[
+				"da",
+				"check-lists/daily-review.todo"
+			],
+			[
+				"рас",
+				"activities/учёт-расходов.md"
+			],
+			[
+				"хо",
+				"@холидей.todo"
+			],
+			[
+				"тодо",
+				"+тодо.todo"
+			],
+			[
+				"boo",
+				"later-books.todo"
+			],
+			[
+				"хол",
+				"@холидей.todo"
+			],
+			[
+				"к",
+				"календарь.todo"
+			],
+			[
+				"day",
+				"check-lists/daily-review.todo"
+			],
+			[
+				"вез",
+				"@везде.todo"
+			],
+			[
+				"g",
+				"activities/gtd.md"
+			],
+			[
+				"ком",
+				"@компьютер.todo"
+			],
+			[
+				"дом",
+				"@дома.todo"
+			],
+			[
+				"doc",
+				"~/@Activities/@Archive/2017/labracon/docs/total/docs.adoc"
+			],
+			[
+				"кал",
+				"календарь.todo"
+			],
+			[
+				"do",
+				"~/@Activities/@Archive/2017/labracon/docs/total/docs.adoc"
+			],
+			[
+				"о",
+				"@дома.todo"
+			],
+			[
+				"когд",
+				"когда-нибудь-может-быть.todo"
+			],
+			[
+				"dai",
+				"check-lists/daily-review.todo"
+			],
+			[
+				"мег",
+				"@мега.todo"
+			],
+			[
+				"some",
+				"someday-maybe.todo"
+			],
+			[
+				"расх",
+				"journals/расходы.csv"
+			],
+			[
+				"акт",
+				"+активности.todo"
+			],
+			[
+				"ра",
+				"journals/расходы.csv"
+			],
+			[
+				"дог",
+				"activities/договор-ремонта.md"
+			],
+			[
+				"рем",
+				"activities/договор-ремонта.md"
+			],
+			[
+				"т",
+				"+тодо.todo"
+			],
+			[
+				"псих",
+				"activities/психотерапия.md"
+			],
+			[
+				"cal",
+				"calendar.todo"
+			],
+			[
+				"dele",
+				"delegated.todo"
+			],
+			[
+				".todo",
+				"+todo.todo"
+			],
+			[
+				"gtd",
+				"activities/gtd.md"
+			],
+			[
+				"meg",
+				"at-mega.todo"
+			],
+			[
+				"todo.",
+				"+todo.todo"
+			],
+			[
+				"home",
+				"at-home.todo"
+			],
+			[
+				"ho",
+				"at-holiday.todo"
+			],
+			[
+				"at-h",
+				"at-home.todo"
+			],
+			[
+				"cale",
+				"calendar.todo"
+			],
+			[
+				"hom",
+				"at-home.todo"
+			],
+			[
+				"read",
+				"later-read.todo"
+			],
+			[
+				"any",
+				"anywhere.todo"
+			],
+			[
+				"comp",
+				"with-computer.todo"
+			],
+			[
+				"psy",
+				"activities/psychotherapy.md"
+			],
+			[
+				"hoe",
+				"at-home.todo"
+			],
+			[
+				"ff",
+				"at-ff.todo"
+			],
+			[
+				"hol",
+				"at-holiday.todo"
+			],
+			[
+				"s",
+				"someday-maybe.todo"
+			],
+			[
+				"kn",
+				"knowledge-base.md"
+			],
+			[
+				"pro",
+				"projects.md"
+			],
+			[
+				"kb",
+				"knowledge-base.md"
+			],
+			[
+				"ogo",
+				"log.org"
+			],
+			[
+				"fildow",
+				"playback_ip/src/FileDownload.cpp"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 1003.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"~/0my/Alive/notes.sublime-project"
+			],
+			[
+				"not",
+				"~/0my/Alive/notes.sublime-project"
+			]
+		],
+		"width": 1698.0
+	},
+	"select_symbol":
+	{
+		"height": 36.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"# Reforma"
+			]
+		],
+		"width": 507.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": false,
+	"side_bar_visible": true,
+	"side_bar_width": 546.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

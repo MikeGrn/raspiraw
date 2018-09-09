@@ -1470,12 +1470,12 @@ int main(int argc, char** argv) {
 		}
 	}
 
-	start_camera_streaming(sensor, sensor_mode);
+	//start_camera_streaming(sensor, sensor_mode);
 
 	vcos_sleep(cfg.timeout);
 	running = 0;
 
-	stop_camera_streaming(sensor);
+	//stop_camera_streaming(sensor);
 
 port_disable:
 	if (cfg.capture)

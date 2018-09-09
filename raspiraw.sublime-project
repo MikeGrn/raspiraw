@@ -1,0 +1,31 @@
+{
+	"build_systems":
+	[
+		{
+			"name": "Build at pi",
+			"shell_cmd": "ssh pi 'cd /home/azhidkov/raspiraw/repo ; gcc -Wno-stack-protector -ggdb -lmmal_core -lmmal_util -lmmal_vc_client -lvcos -lbcm_host -lpthread -I/opt/vc/include/ -L/opt/vc/lib/ csi_read_test.c -o csi_read_test.out && ./csi_read_test.out'"
+		},
+		{
+		}
+	],
+	"folders":
+	[
+		{
+			"path": "."
+		},
+		{
+			"path": "/mnt/lpx/opt/vc/include"
+		},
+		{
+			"path": "/mnt/lpx/opt/vc/src/hello_pi"
+		}
+	],
+	"settings":
+	{
+		"sublimegdb_attach_cmd": "target remote pi:2222",
+		"sublimegdb_commandline": "ssh pi 'cd /home/azhidkov/raspiraw/repo ; gcc -Wno-stack-protector -ggdb -lmmal_core -lmmal_util -lmmal_vc_client -lvcos -lbcm_host -lpthread -I/opt/vc/include/ -L/opt/vc/lib/ csi_read_test.c -o csi_read_test.out && gdbserver :2222 ./csi_read_test.out' & gdb-multiarch --interpreter=mi",
+		"sublimegdb_exec_cmd": "-exec-continue",
+		"sublimegdb_run_after_init": false,
+		"sublimegdb_workingdir": "${folder:${file}}"
+	}
+}

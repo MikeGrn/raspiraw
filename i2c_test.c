@@ -52,7 +52,7 @@ void main() {
 	uint16_t reg = i;
 	unsigned char out_buf[4];
 	reg_to_buff(reg, out_buf);
-	out_buf[3] = 0b01011000;
+	out_buf[3] = 0b01011100;
 	out_buf[2] = 0b100000;
 	r = write(file, out_buf, 4);
 	if (r != 4) {
