@@ -140,9 +140,9 @@ struct sensor_def
 #include "ar0144_modes.h"
 
 const struct sensor_def *sensors[] = {
-	&ov5647,
+	//&ov5647,
 	//&imx219,
-	&adv7282,
+	//&adv7282,
 	&ar0144,
 	NULL
 };
@@ -323,7 +323,7 @@ const struct sensor_def * probe_sensor(void)
 		sensor_list++;
 		sensor = NULL;
 	}*/
-	return sensors[2];
+	return sensors[0];
 }
 
 void send_regs(int fd, const struct sensor_def *sensor, const struct sensor_regs *regs, int num_regs)
@@ -502,6 +502,7 @@ static void callback(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer)
 	vcos_log_error("Buffer %p returned, filled %d, timestamp %llu, flags %04X", buffer, buffer->length, buffer->pts, buffer->flags);
 	if (running)
 	{
+		vcos_log_error("running");
 		RASPIRAW_PARAMS_T *cfg = (RASPIRAW_PARAMS_T *)port->userdata;
 
 		if (!(buffer->flags&MMAL_BUFFER_HEADER_FLAG_CODECSIDEINFO) &&
@@ -535,8 +536,10 @@ static void callback(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer)
 			}
 		}
 
+		vcos_log_error("is codec: %d", (buffer->flags&MMAL_BUFFER_HEADER_FLAG_CODECSIDEINFO));
 		if (cfg->decodemetadata && (buffer->flags&MMAL_BUFFER_HEADER_FLAG_CODECSIDEINFO))
 		{
+			vcos_log_error("decoding");
 			int bpp = encoding_to_bpp(port->format->encoding);
 			vcos_log_error("First metadata line");
 			decodemetadataline(buffer->data, bpp);
@@ -545,10 +548,13 @@ static void callback(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer)
 		}
 
 		buffer->length = 0;
+		//vcos_log_error("Resending buffer %p", buffer);
 		mmal_port_send_buffer(port, buffer);
 	}
-	else
+	else {
+		vcos_log_error("Releasing buffer");
 		mmal_buffer_header_release(buffer);
+	}
 }
 
 uint32_t order_and_bit_depth_to_encoding(enum bayer_order order, int bit_depth)
@@ -928,19 +934,20 @@ int main(int argc, char** argv) {
 	struct mode_def *sensor_mode = NULL;
 
 	//Initialise any non-zero config values.
+	cfg.mode = 0;
 	cfg.exposure = -1;
 	cfg.gain = -1;
-	cfg.timeout = 5000;
+	cfg.timeout = 1000;
 	cfg.saverate = 20;
-	cfg.bit_depth = -1;
+	cfg.bit_depth = 12;
 	cfg.camera_num = -1;
 	cfg.exposure_us = -1;
 	cfg.i2c_bus = DEFAULT_I2C_DEVICE;
 	cfg.hinc = -1;
 	cfg.vinc = -1;
-	cfg.fps = -1;
-	cfg.width = -1;
-	cfg.height = -1;
+	cfg.fps = 60;
+	cfg.width = 1280;
+	cfg.height = 800;
 	cfg.left = -1;
 	cfg.top = -1;
 
@@ -1098,12 +1105,10 @@ int main(int argc, char** argv) {
 	}
 	vcos_log_error("Encoding %08X", encoding);
 
-	MMAL_COMPONENT_T *rawcam=NULL, *isp=NULL, *render=NULL;
+	MMAL_COMPONENT_T *rawcam=NULL;
 	MMAL_STATUS_T status;
 	MMAL_PORT_T *output = NULL;
 	MMAL_POOL_T *pool = NULL;
-	MMAL_CONNECTION_T *rawcam_isp = NULL;
-	MMAL_CONNECTION_T *isp_render = NULL;
 	MMAL_PARAMETER_CAMERA_RX_CONFIG_T rx_cfg;
 	MMAL_PARAMETER_CAMERA_RX_TIMING_T rx_timing;
 	unsigned int i;
@@ -1116,20 +1121,6 @@ int main(int argc, char** argv) {
 	{
 		vcos_log_error("Failed to create rawcam");
 		return -1;
-	}
-
-	status = mmal_component_create("vc.ril.isp", &isp);
-	if (status != MMAL_SUCCESS)
-	{
-		vcos_log_error("Failed to create isp");
-		goto component_destroy;
-	}
-
-	status = mmal_component_create(MMAL_COMPONENT_DEFAULT_VIDEO_RENDERER, &render);
-	if (status != MMAL_SUCCESS)
-	{
-		vcos_log_error("Failed to create render");
-		goto component_destroy;
 	}
 
 	output = rawcam->output[0];
@@ -1195,10 +1186,10 @@ int main(int argc, char** argv) {
 		}
 	}
 	vcos_log_error("Set pack to %d, unpack to %d", rx_cfg.unpack, rx_cfg.pack);
-	if (sensor_mode->data_lanes)
-		rx_cfg.data_lanes = sensor_mode->data_lanes;
-	if (sensor_mode->image_id)
-		rx_cfg.image_id = sensor_mode->image_id;
+	rx_cfg.data_lanes = 2;
+	vcos_log_error("data lanes: %u", rx_cfg.data_lanes);
+	rx_cfg.image_id = 0x2C;
+	vcos_log_error("Image id: 0x%x", rx_cfg.image_id);
 	status = mmal_port_parameter_set(output, &rx_cfg.hdr);
 	if (status != MMAL_SUCCESS)
 	{
@@ -1206,6 +1197,10 @@ int main(int argc, char** argv) {
 		goto component_destroy;
 	}
 
+	vcos_log_error("Timing %u/%u, %u/%u/%u, %u/%u",
+		rx_timing.timing1, rx_timing.timing2,
+		rx_timing.timing3, rx_timing.timing4, rx_timing.timing5,
+		rx_timing.term1,  rx_timing.term2);
 	rx_timing.hdr.id = MMAL_PARAMETER_CAMERA_RX_TIMING;
 	rx_timing.hdr.size = sizeof(rx_timing);
 	status = mmal_port_parameter_get(output, &rx_timing.hdr);
@@ -1214,20 +1209,27 @@ int main(int argc, char** argv) {
 		vcos_log_error("Failed to get timing");
 		goto component_destroy;
 	}
-	if (sensor_mode->timing[0])
-		rx_timing.timing1 = sensor_mode->timing[0];
-	if (sensor_mode->timing[1])
-		rx_timing.timing2 = sensor_mode->timing[1];
-	if (sensor_mode->timing[2])
-		rx_timing.timing3 = sensor_mode->timing[2];
-	if (sensor_mode->timing[3])
-		rx_timing.timing4 = sensor_mode->timing[3];
-	if (sensor_mode->timing[4])
-		rx_timing.timing5 = sensor_mode->timing[4];
-	if (sensor_mode->term[0])
-		rx_timing.term1 = sensor_mode->term[0];
-	if (sensor_mode->term[1])
-		rx_timing.term2 = sensor_mode->term[1];
+	//if (sensor_mode->timing[0])
+		//rx_timing.timing1 = sensor_mode->timing[0];
+	//if (sensor_mode->timing[1])
+		//rx_timing.timing2 = sensor_mode->timing[1];
+	//if (sensor_mode->timing[2])
+		//rx_timing.timing3 = sensor_mode->timing[2];
+	//if (sensor_mode->timing[3])
+		//rx_timing.timing4 = sensor_mode->timing[3];
+	//if (sensor_mode->timing[4])
+		//rx_timing.timing5 = sensor_mode->timing[4];
+	//if (sensor_mode->term[0])
+		//rx_timing.term1 = sensor_mode->term[0];
+	//if (sensor_mode->term[1])
+	rx_timing.term2 = 0;
+	rx_timing.timing1 = 0;
+	rx_timing.timing2 = 0;
+	rx_timing.timing3 = 0;
+	rx_timing.timing4 = 0;
+	rx_timing.timing5 = 0;
+	rx_timing.term1 = sensor_mode->term[0];
+	rx_timing.term2 = sensor_mode->term[1];
 	vcos_log_error("Timing %u/%u, %u/%u/%u, %u/%u",
 		rx_timing.timing1, rx_timing.timing2,
 		rx_timing.timing3, rx_timing.timing4, rx_timing.timing5,
@@ -1239,6 +1241,8 @@ int main(int argc, char** argv) {
 		goto component_destroy;
 	}
 
+	cfg.camera_num = 1;
+	vcos_log_error("Camera num: %u", cfg.camera_num);
 	if (cfg.camera_num != -1) {
 		vcos_log_error("Set camera_num to %d", cfg.camera_num);
 		status = mmal_port_parameter_set_int32(output, MMAL_PARAMETER_CAMERA_NUM, cfg.camera_num);
@@ -1255,21 +1259,9 @@ int main(int argc, char** argv) {
 		vcos_log_error("Failed to enable rawcam");
 		goto component_destroy;
 	}
-	status = mmal_component_enable(isp);
-	if (status != MMAL_SUCCESS)
-	{
-		vcos_log_error("Failed to enable isp");
-		goto component_destroy;
-	}
-	status = mmal_component_enable(render);
-	if (status != MMAL_SUCCESS)
-	{
-		vcos_log_error("Failed to enable render");
-		goto component_destroy;
-	}
 
-	output->format->es->video.crop.width = sensor_mode->width;
-	output->format->es->video.crop.height = sensor_mode->height;
+	output->format->es->video.crop.width = 1280;
+	output->format->es->video.crop.height = 800;
 	output->format->es->video.width = VCOS_ALIGN_UP(sensor_mode->width, 16);
 	output->format->es->video.height = VCOS_ALIGN_UP(sensor_mode->height, 16);
 	output->format->encoding = encoding;
@@ -1398,81 +1390,10 @@ int main(int argc, char** argv) {
 			vcos_log_error("Sent buffer %p", buffer);
 		}
 	}
-	else
-	{
-		status = mmal_connection_create(&rawcam_isp, output, isp->input[0], MMAL_CONNECTION_FLAG_TUNNELLING);
-		if (status != MMAL_SUCCESS)
-		{
-			vcos_log_error("Failed to create rawcam->isp connection");
-			goto pool_destroy;
-		}
-
-		MMAL_PORT_T *port = isp->output[0];
-		port->format->es->video.crop.width = sensor_mode->width;
-		port->format->es->video.crop.height = sensor_mode->height;
-		if (port->format->es->video.crop.width > 1920)
-		{
-			//Display can only go up to a certain resolution before underflowing
-			port->format->es->video.crop.width /= 2;
-			port->format->es->video.crop.height /= 2;
-		}
-		port->format->es->video.width = VCOS_ALIGN_UP(port->format->es->video.crop.width, 32);
-		port->format->es->video.height = VCOS_ALIGN_UP(port->format->es->video.crop.height, 16);
-		port->format->encoding = MMAL_ENCODING_I420;
-		status = mmal_port_format_commit(port);
-		if (status != MMAL_SUCCESS)
-		{
-			vcos_log_error("Failed to commit port format on isp output");
-			goto pool_destroy;
-		}
-
-		if (sensor_mode->black_level)
-		{
-			status = mmal_port_parameter_set_uint32(isp->input[0], MMAL_PARAMETER_BLACK_LEVEL, sensor_mode->black_level);
-			if (status != MMAL_SUCCESS)
-			{
-				vcos_log_error("Failed to set black level - try updating firmware");
-			}
-		}
-
-		if (cfg.awb_gains_r && cfg.awb_gains_b)
-		{
-			MMAL_PARAMETER_AWB_GAINS_T param = {{MMAL_PARAMETER_CUSTOM_AWB_GAINS,sizeof(param)}, {0,0}, {0,0}};
-
-			param.r_gain.num = (unsigned int)(cfg.awb_gains_r * 65536);
-			param.b_gain.num = (unsigned int)(cfg.awb_gains_b * 65536);
-			param.r_gain.den = param.b_gain.den = 65536;
-			status = mmal_port_parameter_set(isp->input[0], &param.hdr);
-			if (status != MMAL_SUCCESS)
-			{
-				vcos_log_error("Failed to set white balance");
-			}
-		}
-
-		status = mmal_connection_create(&isp_render, isp->output[0], render->input[0], MMAL_CONNECTION_FLAG_TUNNELLING);
-		if (status != MMAL_SUCCESS)
-		{
-			vcos_log_error("Failed to create isp->render connection");
-			goto pool_destroy;
-		}
-
-		status = mmal_connection_enable(rawcam_isp);
-		if (status != MMAL_SUCCESS)
-		{
-			vcos_log_error("Failed to enable rawcam->isp connection");
-			goto pool_destroy;
-		}
-		status = mmal_connection_enable(isp_render);
-		if (status != MMAL_SUCCESS)
-		{
-			vcos_log_error("Failed to enable isp->render connection");
-			goto pool_destroy;
-		}
-	}
-
 	//start_camera_streaming(sensor, sensor_mode);
 
 	vcos_sleep(cfg.timeout);
+	vcos_log_error("exiting");
 	running = 0;
 
 	//stop_camera_streaming(sensor);
@@ -1480,6 +1401,7 @@ int main(int argc, char** argv) {
 port_disable:
 	if (cfg.capture)
 	{
+		vcos_log_error("disabling port...");
 		status = mmal_port_disable(output);
 		if (status != MMAL_SUCCESS)
 		{
@@ -1488,75 +1410,23 @@ port_disable:
 		}
 	}
 pool_destroy:
-	if (pool)
+	if (pool) {
+		vcos_log_error("destroying pool");
 		mmal_port_pool_destroy(output, pool);
-	if (isp_render)
-	{
-		mmal_connection_disable(isp_render);
-		mmal_connection_destroy(isp_render);
-	}
-	if (rawcam_isp)
-	{
-		mmal_connection_disable(rawcam_isp);
-		mmal_connection_destroy(rawcam_isp);
 	}
 component_disable:
 	if (brcm_header)
 		free(brcm_header);
-	status = mmal_component_disable(render);
-	if (status != MMAL_SUCCESS)
-	{
-		vcos_log_error("Failed to disable render");
-	}
-	status = mmal_component_disable(isp);
-	if (status != MMAL_SUCCESS)
-	{
-		vcos_log_error("Failed to disable isp");
-	}
+	vcos_log_error("Disabling rawcam...");
 	status = mmal_component_disable(rawcam);
 	if (status != MMAL_SUCCESS)
 	{
 		vcos_log_error("Failed to disable rawcam");
 	}
 component_destroy:
-	if (rawcam)
+	if (rawcam) {
+		vcos_log_error("Destroying rawcam");
 		mmal_component_destroy(rawcam);
-	if (isp)
-		mmal_component_destroy(isp);
-	if (render)
-		mmal_component_destroy(render);
-
-	if (cfg.write_timestamps)
-	{
-		// Save timestamps
-		FILE *file;
-		file = fopen(cfg.write_timestamps, "wb");
-		if (file)
-		{
-			int64_t old = 0;
-			PTS_NODE_T aux;
-			for(aux = cfg.ptsa; aux != cfg.ptso; aux = aux->nxt)
-			{
-				if (aux == cfg.ptsa)
-				{
-					fprintf(file, ",%d,%lld\n", aux->idx, aux->pts);
-				}
-				else
-				{
-					fprintf(file, "%lld,%d,%lld\n", aux->pts-old, aux->idx, aux->pts);
-				}
-				old = aux->pts;
-			}
-			fclose(file);
-		}
-
-		while (cfg.ptsa != cfg.ptso)
-		{
-			PTS_NODE_T aux = cfg.ptsa->nxt;
-			free(cfg.ptsa);
-			cfg.ptsa = aux;
-		}
-		free(cfg.ptso);
 	}
 
 	return 0;
@@ -1636,6 +1506,7 @@ void update_regs(const struct sensor_def *sensor, struct mode_def *mode, int hfl
 			}
 		}
 	}
+	vcos_log_error("Min vts: %d\n", mode->min_vts);
 	if (sensor->vts_reg && exposure != -1 && exposure >= mode->min_vts)
 	{
 		if (exposure < 0 || exposure >= (1<<sensor->vts_reg_num_bits))

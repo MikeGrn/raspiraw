@@ -1,209 +1,154 @@
-/*
-Copyright (c) 2012, Broadcom Europe Ltd
-All rights reserved.
+#include "stdio.h"
+#include "unistd.h"
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * Neither the name of the copyright holder nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
+#include <bcm_host.h>
+#include <interface/mmal/mmal.h>
+#include <interface/mmal/util/mmal_component_wrapper.h>
+#include <interface/mmal/util/mmal_default_components.h>
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+static MMAL_WRAPPER_T* rawcam;
+static VCOS_SEMAPHORE_T sem;
 
-// Camera demo using OpenMAX IL though the ilcient helper library
-// modified from hello_video.c by HJ Imbens
+static void mmalCallback(MMAL_WRAPPER_T* rawcam) {
+    printf("Callback called\n");
+    vcos_semaphore_post(&sem);
+}
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
+int main(int argc, char const* argv[]) {
+    printf("test4\n");
 
-#include "bcm_host.h"
-#include "libs/ilclient/ilclient.h"
+    bcm_host_init();
+    if (vcos_semaphore_create(&sem, "comp sem", 0) != VCOS_SUCCESS) {
+        printf("sem error\n");
+        exit(1);
+    } else {
+        printf("sem created\n");
+    }
 
-#define kDecoderInputPort 130         
-#define kDecoderOutputPort 131          
+    if (mmal_wrapper_create(&rawcam, "vc.ril.rawcam") != MMAL_SUCCESS) {
+        printf("rawcam error \n");
+        exit(1);
+    } else {
+        printf("wrapper created\n");
+    }
+    rawcam->callback = mmalCallback;
 
-#define kSchedulerInputPort 10          
-#define kSchedulerOutputPort 11         
-#define kSchedulerClockPort 12          
+    MMAL_PORT_T* output = NULL;
+    MMAL_PARAMETER_CAMERA_RX_CONFIG_T rx_cfg;
+    MMAL_STATUS_T status;
+    MMAL_PARAMETER_CAMERA_RX_TIMING_T rx_timing;
+    output = rawcam->output[0];
 
-#define kRendererInputPort 90         
+    rx_cfg.hdr.id = MMAL_PARAMETER_CAMERA_RX_CONFIG;
+    rx_cfg.hdr.size = sizeof(rx_cfg);
+    status = mmal_port_parameter_get(output, &rx_cfg.hdr);
+    if (status != MMAL_SUCCESS) {
+        printf("Failed to get cfg\n");
+        goto component_destroy;
+    } else {
+        printf("port parameter get\n");
+    }
 
-#define kEGLRendererInputPort 220         
-#define kEGLRendererImagePort 221
+    rx_cfg.unpack = MMAL_CAMERA_RX_CONFIG_UNPACK_NONE;
+    rx_cfg.pack = MMAL_CAMERA_RX_CONFIG_PACK_NONE;
 
-#define kClockOutputPort0 80          
-#define kClockOutputPort1 81          
-#define kClockOutputPort2 82          
-#define kClockOutputPort3 83          
-#define kClockOutputPort4 84          
-#define kClockOutputPort5 85
+    rx_cfg.data_lanes = 2;
+    //rx_cfg.image_id = 0x2B;
+    rx_cfg.image_id = 0xB0;
+    status = mmal_port_parameter_set(output, &rx_cfg.hdr);
+    if (status != MMAL_SUCCESS) {
+        printf("Failed to set cfg\n");
+        goto component_destroy;
+    } else {
+        printf("port parameter set\n");
+    }
 
-#define kAudioDecoderInputPort 120          
-#define kAudioDecoderOutputPort 121         
+    rx_timing.hdr.id = MMAL_PARAMETER_CAMERA_RX_TIMING;
+    rx_timing.hdr.size = sizeof(rx_timing);
+    status = mmal_port_parameter_get(output, &rx_timing.hdr);
+    if (status != MMAL_SUCCESS)
+    {
+        printf("Failed to get timing\n");
+        goto component_destroy;
+    } else {
+        printf("timing get\n");
+    }
+    status = mmal_port_parameter_set(output, &rx_timing.hdr);
+    if (status != MMAL_SUCCESS)
+    {
+        printf("Failed to set timing\n");
+        goto component_destroy;
+    } else {
+        printf("Timing is set \n");
+    }
 
-#define kAudioRendererInputPort 100         
-#define kAudioRendererClockPort 101         
-
-#define kAudioMixerClockPort 230          
-#define kAudioMixerOutputPort 231         
-#define kAudioMixerInputPort0 232         
-#define kAudioMixerInputPort1 233         
-#define kAudioMixerInputPort2 234         
-#define kAudioMixerInputPort3 235         
-
-#define kCameraPreviewPort 70         
-#define kCameraCapturePort 71         
-#define kCameraStillImagePort 72          
-#define kCameraClockPort 73         
-
-#define kResizeInputPort 60
-#define kResizeOutputPort 61
-
-static int camera_test()
-{
-   OMX_TIME_CONFIG_CLOCKSTATETYPE cstate;
-   OMX_CONFIG_PORTBOOLEANTYPE cameraport;
-   OMX_CONFIG_DISPLAYREGIONTYPE displayconfig;
-   COMPONENT_T *camera = NULL, *video_render = NULL, *clock = NULL;
-   COMPONENT_T *list[4];
-   TUNNEL_T tunnel[3];
-   ILCLIENT_T *client;
-   int status = 0;
-   int height = 600;
-   int w = 4*height/3;
-   int h = height;
-   int x = (1280 - 4*height/3)/2;
-   int y = (720 - height)/2;
-   int layer = 0;
-
-   memset(list, 0, sizeof(list));
-   memset(tunnel, 0, sizeof(tunnel));
-
-   if((client = ilclient_init()) == NULL)
-   {
-      return -3;
+   if (output->is_enabled) {
+      if (mmal_wrapper_port_disable(output) != MMAL_SUCCESS) {
+         fprintf(stderr, "Failed to disable output port\n");
+         exit(1);
+      }
    }
 
-   if(OMX_Init() != OMX_ErrorNone)
-   {
-      ilclient_destroy(client);
-      return -4;
-   }
 
-   // create video_decode
-   int res = ilclient_create_component(client, &camera, "vc.ril.rawcam", ILCLIENT_DISABLE_ALL_PORTS);
-   if(res != 0)
-      status = -14;
-   list[0] = camera;
-
-   // create video_render
-   if(status == 0 && ilclient_create_component(client, &video_render, "video_render", ILCLIENT_DISABLE_ALL_PORTS) != 0)
-      status = -14;
-   list[1] = video_render;
-
-   // create clock
-   if(status == 0 && ilclient_create_component(client, &clock, "clock", ILCLIENT_DISABLE_ALL_PORTS) != 0)
-      status = -14;
-   list[2] = clock;
-
-   // enable the capture port of the camera
-   memset(&cameraport, 0, sizeof(cameraport));
-   cameraport.nSize = sizeof(cameraport);
-   cameraport.nVersion.nVersion = OMX_VERSION;
-   cameraport.nPortIndex = kCameraCapturePort;
-   cameraport.bEnabled = OMX_TRUE;
-   if(camera != NULL && OMX_SetParameter(ILC_GET_HANDLE(camera), OMX_IndexConfigPortCapturing, &cameraport) != OMX_ErrorNone)
-      status = -13;
-
-
-   // configure the renderer to display the content in a 4:3 rectangle in the middle of a 1280x720 screen
-   memset(&displayconfig, 0, sizeof(displayconfig));
-   displayconfig.nSize = sizeof(displayconfig);
-   displayconfig.nVersion.nVersion = OMX_VERSION;
-   displayconfig.set = (OMX_DISPLAYSETTYPE)(OMX_DISPLAY_SET_FULLSCREEN | OMX_DISPLAY_SET_DEST_RECT | OMX_DISPLAY_SET_LAYER);
-   displayconfig.nPortIndex = kRendererInputPort;
-   displayconfig.fullscreen = (w > 0 && h > 0) ? OMX_FALSE : OMX_TRUE; 
-   displayconfig.dest_rect.x_offset = x;
-   displayconfig.dest_rect.y_offset = y;
-   displayconfig.dest_rect.width = w;
-   displayconfig.dest_rect.height = h;
-   displayconfig.layer = layer;
-   printf ("dest_rect: %d,%d,%d,%d\n", x, y, w, h);
-   printf ("layer: %d\n", (int)displayconfig.layer);
-   if (video_render != NULL && OMX_SetParameter(ILC_GET_HANDLE(video_render), OMX_IndexConfigDisplayRegion, &displayconfig) != OMX_ErrorNone) {
-      status = -13;
-      printf ("OMX_IndexConfigDisplayRegion failed\n");
+   if (mmal_wrapper_port_enable(output, MMAL_WRAPPER_FLAG_PAYLOAD_ALLOCATE)
+       != MMAL_SUCCESS) {
+        fprintf(stderr, "Failed to enable output port\n");
+        exit(1);
    } else {
-    printf("OMX_IndexConfigDisplayRegion\n");
+        printf("Port enabled\n");
    }
 
-   // create a tunnel from the camera to the video_render component
-   set_tunnel(tunnel+0, camera, kCameraCapturePort, video_render, kRendererInputPort);
-   // create a tunnel from the clock to the camera
-   set_tunnel(tunnel+1, clock, kClockOutputPort0, camera, kCameraClockPort);
+   int eos = 0;
+   int again_cnt = 0;
+   MMAL_BUFFER_HEADER_T* out;
+      // Send output buffers to be filled with encoded image.
+      while (mmal_wrapper_buffer_get_empty(output, &out, 0) == MMAL_SUCCESS) {
+         if (mmal_port_send_buffer(output, out) != MMAL_SUCCESS) {
+            fprintf(stderr, "Failed to send buffer\n");
+            break;
+         } else {
+            printf("buffer sent\n");
+         }
+      }
+   while (!eos) {
+    
 
-   // setup both tunnels
-   if(status == 0 && ilclient_setup_tunnel(tunnel+0, 0, 0) != 0) {
-      status = -15;
+      // Get filled output buffers.
+      status = mmal_wrapper_buffer_get_full(output, &out, 0);
+      if (out != NULL) {
+        printf("- received %i bytes\n", out->length);
+      }
+      if (status == MMAL_EAGAIN) {
+        printf("egain\n");
+        sleep(1);
+         // No buffer available, wait for callback and loop.
+         //vcos_semaphore_wait(&sem);
+
+        again_cnt++;
+        if (again_cnt == 3) {
+          break;
+        } else {
+         continue;
+        }
+      } else if (status != MMAL_SUCCESS) {
+         fprintf(stderr, "Failed to get full buffer\n");
+         exit(1);
+      } else {
+        printf("Output get\n");
+      }
+
+      eos = out->flags & MMAL_BUFFER_HEADER_FLAG_EOS;
+
+    
+      mmal_buffer_header_release(out);
    }
-   if(status == 0 && ilclient_setup_tunnel(tunnel+1, 0, 0) != 0) {
-      status = -15;
-   }
 
-   // change state of components to executing
-   ilclient_change_component_state(camera, OMX_StateExecuting);
-   ilclient_change_component_state(video_render, OMX_StateExecuting);
-   ilclient_change_component_state(clock, OMX_StateExecuting);
+   mmal_port_flush(output);
 
-   // start the camera by changing the clock state to running
-   memset(&cstate, 0, sizeof(cstate));
-   cstate.nSize = sizeof(displayconfig);
-   cstate.nVersion.nVersion = OMX_VERSION;
-   cstate.eState = OMX_TIME_ClockStateRunning;
-   OMX_SetParameter (ILC_GET_HANDLE(clock), OMX_IndexConfigTimeClockState, &cstate);
+component_destroy:
+    if (rawcam)
+        mmal_wrapper_destroy(rawcam);
 
-   while (status == 0) {
-      struct timespec theSleepTime;
-      theSleepTime.tv_sec = 1000/1000;
-      theSleepTime.tv_nsec = (1000%1000)*1000000;
-      nanosleep(&theSleepTime, 0);
-   }
-
-   ilclient_disable_tunnel(tunnel);
-   ilclient_disable_tunnel(tunnel+1);
-   ilclient_teardown_tunnels(tunnel);
-
-   ilclient_state_transition(list, OMX_StateIdle);
-   ilclient_state_transition(list, OMX_StateLoaded);
-
-   ilclient_cleanup_components(list);
-
-   OMX_Deinit();
-
-   ilclient_destroy(client);
-   return status;
+   vcos_semaphore_delete(&sem);
+   return 0;
 }
-
-int main (int argc, char **argv)
-{
-   bcm_host_init();
-   return camera_test();
-}
-
