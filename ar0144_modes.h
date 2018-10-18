@@ -79,14 +79,14 @@ struct sensor_def ar0144 = {
    .modes =                ar0144_modes,
    .num_modes =            1,
    .stop =                 ar0144_stop,
-   .num_stop_regs =        0,
+   .num_stop_regs =        1,
 
    .i2c_addr =             0x10,
    .i2c_addressing =       2,
    .i2c_data_size =        2,
    .i2c_ident_length =     2,
    .i2c_ident_reg =        0x301A,
-   .i2c_ident_value =      0x5C20,  // TODO: Fix ME!!!!
+   .i2c_ident_value =      0x5820,  // TODO: Fix ME!!!!
 
    .vflip_reg =            0x3820,
    .vflip_reg_bit =        0,
