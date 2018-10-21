@@ -46,6 +46,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 struct sensor_regs ar0144_regs[] =
         {
                 // start streaming
+                //{0x3100, 1},
                 {0x301A, 0x205C}, // TODO fix ME!!!!
         };
 
@@ -88,18 +89,18 @@ struct sensor_def ar0144 = {
    .i2c_ident_reg =        0x301A,
    .i2c_ident_value =      0x5820,  // TODO: Fix ME!!!!
 
-   .vflip_reg =            0x3820,
+   .vflip_reg =            0,
    .vflip_reg_bit =        0,
-   .hflip_reg =            0x3821,
+   .hflip_reg =            0,
    .hflip_reg_bit =        0,
 
-   .exposure_reg =         0x3500,
+   .exposure_reg =         0,
    .exposure_reg_num_bits = 20,
 
-   .vts_reg =              0x380E,
+   .vts_reg =              0,
    .vts_reg_num_bits =     16,
 
-   .gain_reg =             0x350A,
+   .gain_reg =             0,
    .gain_reg_num_bits =    10,
 };
 

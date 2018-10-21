@@ -106,9 +106,18 @@ void write_register(int fd, uint8_t i2c_addr, uint16_t reg, uint16_t value) {
 }
 
 int main(int argc, char **argv) {
-	if (argc == 1) {
-		printf("Options: show_streaming|start_streaming|stop_streaming\n");
+	if (argc < 2) {
+		printf("Options: show_streaming|start_streaming|stop_streaming|show_temp|show_reg <reg>\n");
 		return -1;
+	}
+	uint16_t reg = 0;
+	if (argc == 3) {
+		if (strlen(argv[2]) != 6) {
+			printf("Reg format: 0xDDDD (0x30A1)");
+			return -1;
+		}
+		char *end = NULL;
+		reg = strtoul(argv[2], &end, 16);
 	}
 
 	int file;
@@ -135,6 +144,12 @@ int main(int argc, char **argv) {
 		show_register(file, 0x10, 0x301a);
 		write_register(file, 0x10, 0x301a, 0x2058);
 		show_register(file, 0x10, 0x301a);
+	} else if (strcmp(argv[1], "show_temp") == 0) {
+		write_register(file, 0x10, 0x30b4, 0b10001);
+		sleep(1);
+		show_register(file, 0x10, 0x30b2);
+	} else if (strcmp(argv[1], "show_reg") == 0) {
+	    show_register(file, 0x10, reg);
 	}
 
 int r;
