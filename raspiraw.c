@@ -56,6 +56,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "raw_header.h"
 
+#include "converter.h"
+
 #define DEFAULT_I2C_DEVICE 0
 
 #define I2C_DEVICE_NAME_LEN 13	// "/dev/i2c-XXX"+NULL
@@ -530,6 +532,12 @@ static void callback(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer)
                         fwrite(buffer->data, buffer->length, 1, file);
                     }
                     fclose(file);
+
+                    char *png_name = malloc(sizeof(char) * (strlen(filename) + 5));
+                    strcpy(png_name, filename);
+                    strcpy(&png_name[strlen(filename)], ".png\0");
+                    convert_raw12_to_png(filename, png_name, (uint16_t) port->format->es->video.width, (uint16_t) port->format->es->video.height);
+                    free(png_name);
                 }
                 free(filename);
             }
@@ -587,8 +595,7 @@ uint32_t order_and_bit_depth_to_encoding(enum bayer_order order, int bit_depth)
         return 0;
     }
 
-    switch(bit_depth)
-    {
+    switch (bit_depth) {
         case 8:
             return depth8[order];
         case 10:

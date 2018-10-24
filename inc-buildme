@@ -1,4 +1,4 @@
 if [ "./raspiraw.c" -nt "./raspiraw" ] || [ "./ar0144_modes.h" -nt "./raspiraw" ]; then
-    gcc -g -lmmal_core -lmmal_util -lmmal_vc_client -lvcos -lbcm_host -I/opt/vc/include/ -L/opt/vc/lib/ -o raspiraw raspiraw.c RaspiCLI.c
+    gcc -g -lmmal_core -lmmal_util -lmmal_vc_client -lvcos -lbcm_host -lpng -I/opt/vc/include/ -L/opt/vc/lib/ -o raspiraw raspiraw.c RaspiCLI.c converter.c
 fi
 
