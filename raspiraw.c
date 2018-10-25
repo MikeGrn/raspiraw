@@ -533,11 +533,17 @@ static void callback(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer)
                     }
                     fclose(file);
 
-                    char *png_name = malloc(sizeof(char) * (strlen(filename) + 5));
-                    strcpy(png_name, filename);
-                    strcpy(&png_name[strlen(filename)], ".png\0");
-                    convert_raw12_to_png(filename, png_name, (uint16_t) port->format->es->video.width, (uint16_t) port->format->es->video.height);
-                    free(png_name);
+                    char *png_lo_name = malloc(sizeof(char) * (strlen(filename) + 8));
+                    strcpy(png_lo_name, filename);
+                    strcpy(&png_lo_name[strlen(filename)], "-lo.png\0");
+
+                    char *png_hi_name = malloc(sizeof(char) * (strlen(filename) + 8));
+                    strcpy(png_hi_name, filename);
+                    strcpy(&png_hi_name[strlen(filename)], "-hi.png\0");
+                    convert_raw12_to_png(filename, png_lo_name, png_hi_name, (uint16_t) port->format->es->video.width, (uint16_t) port->format->es->video.height);
+
+                    free(png_lo_name);
+                    free(png_hi_name);
                 }
                 free(filename);
             }
