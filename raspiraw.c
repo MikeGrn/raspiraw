@@ -53,6 +53,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "RaspiCLI.h"
 
 #include <sys/ioctl.h>
+#include <sys/time.h>
 
 #include "raw_header.h"
 
@@ -497,6 +498,13 @@ int encoding_to_bpp(uint32_t encoding)
 
 }
 
+struct timeval app_start = {0};
+struct timeval streaming_start = {0};
+struct timeval first_frame = {0};
+
+struct timeval streaming_restart = {0};
+struct timeval restart_first_frame = {0};
+
 int running = 0;
 static void callback(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer)
 {
@@ -506,6 +514,13 @@ static void callback(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer)
     {
         RASPIRAW_PARAMS_T *cfg = (RASPIRAW_PARAMS_T *)port->userdata;
 
+        if (!(buffer->flags&MMAL_BUFFER_HEADER_FLAG_CODECSIDEINFO)) {
+            if (first_frame.tv_sec == 0) {
+                gettimeofday(&first_frame, NULL);
+            } else if (streaming_restart.tv_sec != 0 && restart_first_frame.tv_sec == 0) {
+                gettimeofday(&restart_first_frame, NULL);
+            }
+        }
         if (!(buffer->flags&MMAL_BUFFER_HEADER_FLAG_CODECSIDEINFO) &&
             (((count++)%cfg->saverate)==0))
         {
@@ -559,10 +574,11 @@ static void callback(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer)
         }
 
         buffer->length = 0;
-        mmal_port_send_buffer(port, buffer);
+        //mmal_port_send_buffer(port, buffer);
     }
-    else
-        mmal_buffer_header_release(buffer);
+    mmal_port_send_buffer(port, buffer);
+/*    else
+        mmal_buffer_header_release(buffer);*/
 }
 
 uint32_t order_and_bit_depth_to_encoding(enum bayer_order order, int bit_depth)
@@ -934,7 +950,12 @@ enum operation {
 
 void modReg(struct mode_def *mode, uint16_t reg, int startBit, int endBit, int value, enum operation op);
 
+uint64_t tv2mks(struct timeval tv) {
+    return tv.tv_sec * 1000000ULL + tv.tv_usec;
+}
+
 int main(int argc, char** argv) {
+    gettimeofday(&app_start, NULL);
     RASPIRAW_PARAMS_T cfg = { 0 };
     uint32_t encoding;
     const struct sensor_def *sensor;
@@ -1481,13 +1502,31 @@ int main(int argc, char** argv) {
         }
     }
 
+
     start_camera_streaming(sensor, sensor_mode);
+    gettimeofday(&streaming_start, NULL);
 
     vcos_sleep(cfg.timeout);
     running = 0;
 
     stop_camera_streaming(sensor);
 
+    printf("Restarting streaming\n");
+
+
+    running = 1;
+    start_camera_streaming(sensor, sensor_mode);
+    gettimeofday(&streaming_restart, NULL);
+
+    vcos_sleep(cfg.timeout);
+    running = 0;
+
+    stop_camera_streaming(sensor);
+
+    uint64_t td1 = tv2mks(first_frame) - tv2mks(app_start);
+    uint64_t td2 = tv2mks(restart_first_frame) - tv2mks(streaming_restart);
+    printf("ff - run: %llu\n", td1);
+    printf("ff2 - pause: %llu\n", td2);
     port_disable:
     if (cfg.capture)
     {
