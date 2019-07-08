@@ -107,17 +107,19 @@ void write_register(int fd, uint8_t i2c_addr, uint16_t reg, uint16_t value) {
 
 int main(int argc, char **argv) {
 	if (argc < 2) {
-		printf("Options: show_streaming|start_streaming|stop_streaming|show_temp|show_reg <reg>\n");
+		printf("Options: show_streaming|start_streaming|stop_streaming|show_temp|show_reg <reg>|write_reg <reg> <value>\n");
 		return -1;
 	}
 	uint16_t reg = 0;
-	if (argc == 3) {
-		if (strlen(argv[2]) != 6) {
+	uint16_t value = 0;
+	if (argc == 3 || argc == 4) {
+		if (strlen(argv[2]) != 6 || strlen(argv[3]) != 6) {
 			printf("Reg format: 0xDDDD (0x30A1)");
 			return -1;
 		}
 		char *end = NULL;
 		reg = strtoul(argv[2], &end, 16);
+		value = strtoul(argv[3], &end, 16);
 	}
 
 	int file;
@@ -149,39 +151,13 @@ int main(int argc, char **argv) {
 		sleep(1);
 		show_register(file, 0x10, 0x30b2);
 	} else if (strcmp(argv[1], "show_reg") == 0) {
-	    show_register(file, 0x10, reg);
+	    	show_register(file, 0x10, reg);
+	} else if (strcmp(argv[1], "write_reg") == 0) {
+	    	show_register(file, 0x10, reg);
+		write_register(file, 0x10, reg, value);
+		sleep(1);
+		show_register(file, 0x10, reg);
 	}
-
-int r;
-	//printf("Temp value: ");
-	//read_register(file, 0x10, 0x30b2);
-	//read_register(file, 0x10, 0x30b4);
-
-	//r = i2c_write16(file, 0x10, 0x30b4, 0b10001);
-
-	//printf("Temp value: ");
-	//read_register(file, 0x10, 0x30b2);
-	//read_register(file, 0x10, 0x30b4);
-
-	//r = i2c_write16(file, 0x10, 0x30b4, 0);
-	//printf("Temp value: ");
-	//read_register(file, 0x10, 0x30b2);
-	//read_register(file, 0x10, 0x30b4);
-	//read_register(file, 0x10, 0x30b2);
-
-
-/*	printf("Streaming: ");
-	read_register(file, 0x10, 0x301a);
-
-	unsigned char out_buf[4];
-	reg_to_buff(0x301a, out_buf);
-	out_buf[3] = 0b01011100;
-	out_buf[2] = 0b100000;
-	r = write(file, out_buf, 4);
-
-	printf("Streaming: ");
-	read_register(file, 0x10, 0x301a);*/
-
 
 close_file:
 	close(file);
