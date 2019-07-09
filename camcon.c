@@ -113,13 +113,15 @@ int main(int argc, char **argv) {
 	uint16_t reg = 0;
 	uint16_t value = 0;
 	if (argc == 3 || argc == 4) {
-		if (strlen(argv[2]) != 6 || strlen(argv[3]) != 6) {
+		if (strlen(argv[2]) != 6 || (argc == 4 && strlen(argv[3]) != 6)) {
 			printf("Reg format: 0xDDDD (0x30A1)");
 			return -1;
 		}
 		char *end = NULL;
 		reg = strtoul(argv[2], &end, 16);
-		value = strtoul(argv[3], &end, 16);
+		if(argc == 4){
+			value = strtoul(argv[3], &end, 16);
+		}
 	}
 
 	int file;
@@ -153,9 +155,11 @@ int main(int argc, char **argv) {
 	} else if (strcmp(argv[1], "show_reg") == 0) {
 	    	show_register(file, 0x10, reg);
 	} else if (strcmp(argv[1], "write_reg") == 0) {
+		printf("old value: ");
 	    	show_register(file, 0x10, reg);
 		write_register(file, 0x10, reg, value);
 		sleep(1);
+		printf("new value: ");
 		show_register(file, 0x10, reg);
 	}
 
