@@ -2262,13 +2262,10 @@ MMAL_PORT_T *port;
 
     printf("Restarting streaming\n");
 
-
-    running = 1;
     start_camera_streaming(sensor, sensor_mode);
     gettimeofday(&streaming_restart, NULL);
 
     vcos_sleep(cfg.timeout);
-    running = 0;
 
     stop_camera_streaming(sensor);
 
