@@ -1,2 +1,1 @@
-gcc -g -lmmal_core -lmmal_util -lmmal_vc_client -lvcos -lbcm_host -lpng -I/opt/vc/include/ -L/opt/vc/lib/ -o raspiraw raspiraw.c RaspiCLI.c converter.c
-
+gcc -g -O0 -lmmal_core -lmmal_util -lmmal_vc_client -lvcos -lbcm_host -lpng -lvcsm -I/opt/vc/include/ -L/opt/vc/lib/ -o raspiraw raspiraw.c RaspiCLI.c converter.c
